@@ -1,0 +1,7 @@
+= Homebrew tap for Neo4j seabolt
+
+Tap and install with
+
+```
+brew install michael-simons/homebrew-seabolt/seabolt
+```
