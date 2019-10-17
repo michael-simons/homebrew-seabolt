@@ -5,7 +5,8 @@ class Seabolt < Formula
   sha256 "f51c02dfef862d97963a7b67b670750730fcdd7b56a11ce87c8c1d01826397ee"
 
   depends_on "cmake" => :build
-  depends_on "openssl"
+  depends_on "pkg-config"
+  depends_on "openssl" => [:build, :test]
 
   patch :DATA  if MacOS.version == :catalina
 
