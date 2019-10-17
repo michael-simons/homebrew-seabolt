@@ -5,3 +5,12 @@ Tap and install with
 ```
 brew install michael-simons/homebrew-seabolt/seabolt
 ```
+
+Afterwards, `seabolt-cli` is available on the path and you can run queries like this:
+
+```
+BOLT_PASSWORD=secret seabolt-cli run "UNWIND range(1, 23) AS n RETURN n"
+```
+
+The library can also be used for developing with Go using the https://github.com/neo4j/neo4j-go-driver[Neo4j Go Driver]. 
+Here's a good starter: https://medium.com/neo4j/neo4j-go-driver-is-out-fbb4ba5b3a30[The All New Neo4j Drivers Are Out — Now Including Go!]
