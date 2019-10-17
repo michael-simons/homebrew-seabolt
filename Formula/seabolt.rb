@@ -7,6 +7,8 @@ class Seabolt < Formula
   depends_on "cmake" => :build
   depends_on "openssl"
 
+  patch :DATA  if MacOS.version == :catalina
+
   def install
     system "mkdir", "build"
     Dir.chdir('build')
@@ -23,3 +25,18 @@ class Seabolt < Formula
     end
   end
 end
+
+__END__
+diff --git a/src/seabolt-cli/src/main.c b/src/seabolt-cli/src/main.c
+index 41204c2..c286a44 100644
+--- a/src/seabolt-cli/src/main.c
++++ b/src/seabolt-cli/src/main.c
+@@ -46,7 +46,7 @@
+ 
+ #define TIME_UTC 0
+ 
+-void timespec_get(struct timespec *ts, int type)
++int timespec_get(struct timespec *ts, int type)
+ {
+     UNUSED(type);
+     clock_serv_t cclock;
