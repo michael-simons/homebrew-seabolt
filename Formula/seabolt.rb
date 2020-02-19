@@ -29,15 +29,46 @@ end
 
 __END__
 diff --git a/src/seabolt-cli/src/main.c b/src/seabolt-cli/src/main.c
-index 41204c2..c286a44 100644
+index 41204c2..6c7db84 100644
 --- a/src/seabolt-cli/src/main.c
 +++ b/src/seabolt-cli/src/main.c
-@@ -46,7 +46,7 @@
- 
- #define TIME_UTC 0
- 
+@@ -43,20 +43,25 @@
+ #ifdef __APPLE__
+ #include <mach/clock.h>
+ #include <mach/mach.h>
+-
+-#define TIME_UTC 0
+-
 -void timespec_get(struct timespec *ts, int type)
-+int timespec_get(struct timespec *ts, int type)
- {
-     UNUSED(type);
-     clock_serv_t cclock;
+-{
+-    UNUSED(type);
+-    clock_serv_t cclock;
+-    mach_timespec_t mts;
+-    host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
+-    clock_get_time(cclock, &mts);
+-    mach_port_deallocate(mach_task_self(), cclock);
+-    ts->tv_sec = mts.tv_sec;
+-    ts->tv_nsec = mts.tv_nsec;
+-}
++#include <Availability.h>
++
++#ifdef __MAC_OS_X_VERSION_MIN_REQUIRED
++    #if __MAC_OS_X_VERSION_MIN_REQUIRED < 10153
++        #define TIME_UTC 0
++
++        int timespec_get(struct timespec *ts, int type)
++        {
++            UNUSED(type);
++            clock_serv_t cclock;
++            mach_timespec_t mts;
++            host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
++            clock_get_time(cclock, &mts);
++            mach_port_deallocate(mach_task_self(), cclock);
++            ts->tv_sec = mts.tv_sec;
++            ts->tv_nsec = mts.tv_nsec;
++        }
++    #endif
++#endif
+ #endif
+ 
+ enum Command {
