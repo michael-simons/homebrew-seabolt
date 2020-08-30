@@ -8,7 +8,7 @@ class Seabolt < Formula
   depends_on "pkg-config"
   depends_on "openssl" => [:build, :test]
 
-  patch :DATA  if MacOS.version == :catalina
+  patch :DATA  if MacOS.version == :mojave || MacOS.version == :catalina
 
   def install
     system "mkdir", "build"
